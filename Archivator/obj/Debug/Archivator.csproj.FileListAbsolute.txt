@@ -21,7 +21,6 @@ C:\Users\mixap\Documents\ActualRepository\archiver\README\Archivator\obj\Debug\A
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\bin\Debug\Archivator.exe.config
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\bin\Debug\Archivator.exe
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\bin\Debug\Archivator.pdb
-C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archivator.csprojAssemblyReference.cache
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\MainWindow.g.cs
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\App.g.cs
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archivator_MarkupCompile.cache
@@ -34,3 +33,4 @@ C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archiva
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archivator.pdb
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archivator_MarkupCompile.lref
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Dictionary1.baml
+C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\GeneratedInternalTypeHelper.g.cs

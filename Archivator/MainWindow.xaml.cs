@@ -70,11 +70,11 @@ namespace Archivator
     {
         public static ImageSource ToImageSource(this Icon icon)
         {
-           return Imaging.CreateBitmapSourceFromHBitmap(
-          icon.ToBitmap().GetHbitmap(),
-          IntPtr.Zero,
-          Int32Rect.Empty,
-          BitmapSizeOptions.FromEmptyOptions());
+            return Imaging.CreateBitmapSourceFromHBitmap(
+           icon.ToBitmap().GetHbitmap(),
+           IntPtr.Zero,
+           Int32Rect.Empty,
+           BitmapSizeOptions.FromEmptyOptions());
         }
     }
 
@@ -99,7 +99,7 @@ namespace Archivator
             // Конструктор принимающий на вход класс FileInfo из пространства имён System.IO.
             // Из него получаем абсолютный путь.
             FullName = Inf.FullName;
-      
+
             // Имя файла с расширением
             Name = Inf.Name;
             // Дату последнего изменения
@@ -110,7 +110,7 @@ namespace Archivator
             // И размер файла
             // Но т.к он даётся в битах, нужно немного преобразовать строку.
             // Недоделано. Надо размеры до ГБ сделать.
-            if(Inf.Length >= 1024)
+            if (Inf.Length >= 1024)
             {
                 // в одном килобайте 1024 байт.
                 Size = (Inf.Length / 1024).ToString() + " KB";
@@ -120,7 +120,7 @@ namespace Archivator
                 //Собственно если размер меньше 1024 байт
                 Size = Inf.Length.ToString() + " B";
             }
-            
+
             // Ну и из класса System.Drawing берём класс Image, отвечающий за Иконку приложения
             Image = Ico.ToImageSource();
         }
@@ -159,6 +159,7 @@ namespace Archivator
             return BBld.ToString();
         }
 
+        // объявляю здесь потому что 
         ObservableCollection<ListItem> Entry;
 
         public MainWindow()
@@ -175,7 +176,7 @@ namespace Archivator
             // WPF использует их ( интерфейсы ) для обновления значений в ListView
 
             Entry = new ObservableCollection<ListItem>();
-            
+
             // получаем список абсолютных путей файлов в папке "Загрузки"
             var Dirs = Directory.GetFiles(GetDownloadDir());
             // для каждого пути
@@ -184,7 +185,7 @@ namespace Archivator
                 // добавляем новый элемент в список
                 Entry.Add(new ListItem(new FileInfo(path), System.Drawing.Icon.ExtractAssociatedIcon(path)));
             }
-                // Выводим файлы в ListView
+            // Выводим файлы в ListView
             Explorer.ItemsSource = Entry;
         }
 
@@ -213,11 +214,11 @@ namespace Archivator
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             // Когда TextBox находится в фокусе, мы ждём пока нажмут Enter.
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 // здесь обновляем treeView
                 Entry.Clear();
-                
+
                 // Берём текст из TextBox-а и опять составляем лист всех файлов
                 var Dirs = Directory.GetFiles(Navigator.Text);
                 foreach (var path in Dirs)
@@ -252,5 +253,24 @@ namespace Archivator
             // я менял его стиль, надо было проверить
             MessageBox.Show("Работает, успокойся");
         }
+
+        // не знаю насколько этот способ хорош но...
+        private void ListViewItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            /* Это ломает Binding
+            var ob = sender as ListViewItem;
+            if(mem == null)
+            {
+                mem = ob;
+            }
+            else
+            {
+                mem.Background = new SolidColorBrush(Colors.Transparent);
+                mem = ob;
+            }
+            ob.Background = Resources["FadedBlue"] as System.Windows.Media.Brush;
+            */
+        }
+
     }
 }
