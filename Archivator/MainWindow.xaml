@@ -41,7 +41,7 @@
         <DockPanel Height="30" DockPanel.Dock="Top" >
             <Button HorizontalAlignment="Left" Width="30" BorderThickness="0" Style="{StaticResource DirectoryButton}" Click="Button_Click"/>
             <Separator Width="8" Background="Transparent"/>
-            <TextBox x:Name="Navigator" KeyDown="TextBox_KeyDown"></TextBox>
+            <TextBox x:Name="Navigator" KeyDown="TextBox_KeyDown" FontSize="20"></TextBox>
         </DockPanel>
         <!--Explorer. Сделать красивый обрыв имени файла #FF191817 #FF3E3E42-->
         <Separator Height="8" DockPanel.Dock="Top" Background="Transparent"></Separator>
@@ -90,6 +90,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Image MaxWidth="18" MaxHeight="18" Source="{Binding Image}"></Image>
+                                    <Separator Width="3" Background="Transparent"></Separator>
                                     <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" ></TextBlock>
                                 </StackPanel>
                             </DataTemplate>

@@ -34,3 +34,9 @@ C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archiva
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archivator_MarkupCompile.lref
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Dictionary1.baml
 C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archivator.csprojAssemblyReference.cache
+C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\bin\Debug\Microsoft.WindowsAPICodePack.xml
+C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+C:\Users\mixap\Desktop\archiver-UnrelatedHistoryErr\Archivator\obj\Debug\Archivator.csproj.CopyComplete
