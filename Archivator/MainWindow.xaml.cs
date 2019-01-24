@@ -83,11 +83,6 @@ namespace Archivator
     /// </summary>
     public class ListItem
     {
-        // полное имя файла. Иначе говоря абсолютный путь. Изменять нельзя.
-        /// <summary>
-        ///Абсолютный путь к файлу
-        /// </summary>
-        public string FullName { get; }
         // Обычное имя файла. Отображается в столбце "Имя"
         /// <summary>
         ///Имя файла с расширением
@@ -119,9 +114,6 @@ namespace Archivator
         /// <param name="Ico">Иконка файла</param>
         public ListItem(FileInfo Inf, Icon Ico)
         {
-            // Из него получаем абсолютный путь.
-            FullName = Inf.FullName;
-
             // Имя файла с расширением
             Name = Inf.Name;
             // Дату последнего изменения
@@ -153,8 +145,6 @@ namespace Archivator
         /// <param name="info"></param>
         public ListItem(FileInfo info)
         {
-            // Из него получаем абсолютный путь.
-            FullName = info.FullName;
 
             // Имя файла с расширением
             Name = info.Name;
@@ -189,12 +179,11 @@ namespace Archivator
         {
             /* работает медленно.
              * Зато чётко. Ну или почти: 
-             1 Размер файла не указывается. 
-             2 Некоторые иконки некорректно подгружаются. */
+             1 Некоторые иконки некорректно подгружаются. Вроде пофиксил */
 
             Name = info.Name;
 
-            Image = info.Thumbnail.BitmapSource;
+            Image = info.Thumbnail.SmallBitmapSource;
 
             // проверить ChangeData на null
             ChangeData = info.Properties.System.DateModified.Value.Value;
@@ -214,22 +203,22 @@ namespace Archivator
             // Правда это уже не актуально из-за Icon.
             return "BINDING ERROR";
         }
+
     }
 
     public partial class MainWindow : Window
     {
         ObservableCollection<ListItem> Entry;
-        // метод получения папки с загрузками
-        // Способ не идеальный так как берёт первый попавшийся диск
-        // Отсортированы они по алфавиту, поэтому если папка с загрузками пользователя
-        // находится на диске D, но при этом есть диск A,B,C, то поведение непредсказуемо.
-        // Вообще exception может выбить. Надо бы обработать, но мне лень
+        string CurrentDirectory;
+
         #region Вспомогательные функции
-            /// <summary>
-            /// Возвращает путь к папке "Загрузки" первого по алфавиту диска.
-            /// Если не найдена, то возвращает первый по алфавиту логический диск
-            /// </summary>
-            /// <returns></returns>
+
+        /// <summary>
+        /// Возвращает путь к папке "Загрузки" первого по алфавиту диска.
+        /// Если не найдена, то возвращает первый по алфавиту логический диск
+        /// </summary>
+        /// <returns></returns>
+        [Obsolete("Используй ShellObject.FromParsingName(SLSID key)", false)] 
         private string GetDownloadDir()
         {
             // Так как относительно много возьни со строками используем StringBuilder
@@ -251,6 +240,38 @@ namespace Archivator
                 return string.Empty;
             }
         }
+
+        /// <summary>
+        /// Обновляет ListView
+        /// </summary>
+        /// <param name="Path">Полный путь к директории, которую отображает ListView</param>
+        private void UpdateListView(string Path)
+        {
+            // Проверяет есть ли вообще такая директория 
+            // Способ не идеален. Directory.Exists не поддерживает пути которые являются ссылками или shell команды. Пример: C:\Users\mixap\ Папка загрузки, документы и так далее
+            // Костыль с shell
+            if (Directory.Exists(Path) || Path.Contains("shell:"))
+            {
+                CurrentDirectory = Path;
+                Navigator.Text = CurrentDirectory;
+                // значение не попадает в ожидаемый диапозон
+                var TargetFolder = (ShellFolder)ShellObject.FromParsingName(CurrentDirectory);
+                Entry.Clear();
+                foreach (var item in TargetFolder)
+                {
+                    // работай ок ?
+                    Entry.Add(new ListItem(item));
+                }
+                // вот Dispose для всей папки. Разницы между вызовом Dispose для каждого объекта и только для Target Folder ВРОДЕ нет.
+                TargetFolder.Dispose();
+            }
+            else
+            {   // сообщение об ошибке
+                //Надо поменять стиль MessageBox
+                MessageBox.Show("Директория не найдена");
+            }
+        }
+
         #endregion
 
 
@@ -269,22 +290,9 @@ namespace Archivator
 
             Entry = new ObservableCollection<ListItem>();
 
-            // Получаем папку "Загрузки" текущего пользователя с помощью SLSID ключа
-            var Dir = (ShellFolder)ShellObject.FromParsingName("shell:::{374DE290-123F-4565-9164-39C4925E467B}");
+            UpdateListView(@"shell:Downloads");
 
-            // получаем список абсолютных путей файлов в папке "Загрузки"
-            //var Dirs = Directory.GetFiles(@"C:\Users\mixap\Downloads");
-
-            // для каждого пути
-            foreach (var file in Dir)
-            {
-                // добавляем новый элемент в список
-                Entry.Add(new ListItem(file));
-            }
-            // Выводим файлы в ListView
             Explorer.ItemsSource = Entry;
-            // вызываем Dispose для папки. Надо проверить, Dispose-ит ли он ShellObject-ы которые в себе хранит ( должен... но друг )
-            Dir.Dispose();
         }
 
 
@@ -314,8 +322,10 @@ namespace Archivator
         // НЕ ДОДЕЛАНО. Exceptions | ввод вместе с файлом
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            
-            /* На всякий случай не удаляю. Я думаю надо вообще 2 версии сделать
+
+            #region Комменты не сворачиваются ПОЧЕМУ-ТО
+            /* 
+             * На всякий случай не удаляю. Я думаю надо вообще 2 версии сделать
              * Одна будет через SLSID ключи, другая "По старинке" и проблему иконок решить путём "Не можем настоящую поставим дефолтную"
             // Когда TextBox находится в фокусе, мы ждём пока нажмут Enter.
             if (e.Key == Key.Enter)
@@ -338,26 +348,13 @@ namespace Archivator
                 }
             }
             */
-            //А нужен ли нам путь ?
-            if(e.Key == Key.Enter)
+            #endregion
+
+            // не уверен насчёт этого метода
+            if (e.Key == Key.Enter)
             {
                 // Исключение надо ловить
-                if(Directory.Exists(Navigator.Text))
-                {
-                    var TargetFolder = (ShellFolder)ShellObject.FromParsingName(Navigator.Text);
-                    Entry.Clear();
-                    foreach (var item in TargetFolder)
-                    {
-                        // работай ок ?
-                        Entry.Add(new ListItem(item));
-                    }
-                    TargetFolder.Dispose();
-                }
-                else
-                {
-                    //Надо поменять стиль MessageBox
-                    MessageBox.Show("Директория не найдена");
-                }
+                UpdateListView(Navigator.Text);
             }
         }
 
@@ -374,6 +371,8 @@ namespace Archivator
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListItem Src = (e.Source as ListViewItem).Content as ListItem;
+            // не очень красиво
+            UpdateListView(CurrentDirectory + @"\" + Src.Name);
             // Src - это вся необходимая о файле инфа
             // Можно открыть файл на чтение через 
             // var FileStr = File.OpenRead(Src.FullName);
@@ -383,8 +382,7 @@ namespace Archivator
         //Реализуется через Directory. Там есть готовый метод
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // я менял его стиль, надо было проверить
-            MessageBox.Show("Работает, успокойся");
+            UpdateListView(Directory.GetParent(CurrentDirectory).FullName);
         }
 
         // сохранить выделенный до этого объект (Я себя понял). Надо попробовать MultiBinding
