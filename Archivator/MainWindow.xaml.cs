@@ -218,7 +218,7 @@ namespace Archivator
         /// Если не найдена, то возвращает первый по алфавиту логический диск
         /// </summary>
         /// <returns></returns>
-        [Obsolete("Используй ShellObject.FromParsingName(SLSID key)", false)] 
+        [Obsolete("Используй ShellObject.FromParsingName(SLSID key)", false)]
         private string GetDownloadDir()
         {
             // Так как относительно много возьни со строками используем StringBuilder
@@ -230,8 +230,8 @@ namespace Archivator
             BBld.Append(@"Users\");
             BBld.Append(Environment.UserName);
             BBld.Append(@"\Downloads");
-            
-            if(Directory.Exists(BBld.ToString()))
+
+            if (Directory.Exists(BBld.ToString()))
             {
                 return BBld.ToString();
             }
