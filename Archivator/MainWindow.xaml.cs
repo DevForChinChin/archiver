@@ -247,7 +247,7 @@ namespace Archivator
         /// <param name="Path">Полный путь к директории, которую отображает ListView</param>
         private void UpdateListView(string Path)
         {
-            // Проверяет есть ли вообще такая директория 
+            // Проверяет есть ли вообще такая директория
             // Способ не идеален. Directory.Exists не поддерживает пути которые являются ссылками или shell команды. Пример: C:\Users\mixap\ Папка загрузки, документы и так далее
             // Костыль с shell
             if (Directory.Exists(Path) || Path.Contains("shell:"))
