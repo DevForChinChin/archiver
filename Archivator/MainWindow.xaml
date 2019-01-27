@@ -75,8 +75,6 @@
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
-                    <!--Не implemented-->
-                    <EventSetter Event="MouseLeftButtonUp" Handler="ListViewItem_MouseLeftButtonUp"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
@@ -89,7 +87,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image MaxWidth="18" MaxHeight="18" Source="{Binding Image}"></Image>
+                                    <Image MaxWidth="18" MaxHeight="18" MinWidth="18" MinHeight="18" Source="{Binding Image}"></Image>
                                     <Separator Width="3" Background="Transparent"></Separator>
                                     <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" ></TextBlock>
                                 </StackPanel>
@@ -102,7 +100,7 @@
                     <GridViewColumn Header="Размер" Util:GridViewSort.PropertyName="Size">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <!--Стиль для элемента списка. Размер привязан к правой части колонны-->
+                                <!--Стиль для колонны. Текст привязан к правой стороне-->
                                 <TextBlock Text="{Binding Size}" TextAlignment="Right" HorizontalAlignment="Right"></TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -110,6 +108,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <!--Debug Window-->
     </DockPanel>
 </Window>
