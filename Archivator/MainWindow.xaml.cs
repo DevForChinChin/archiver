@@ -110,6 +110,7 @@ namespace Archivator
         public string Size { get; set; }
 
         // Конструктор, принимающий на вход класс FileInfo из пространства имён System.IO.
+        #region Устаревшие конструкторы
         /// <summary>
         /// Конструктор, принимающий информацию о файле и Иконку файла
         /// </summary>
@@ -173,6 +174,7 @@ namespace Archivator
             // AssociatedIcon по полному имени файла, конвертируется в ImageSource
             Image = Icon.ExtractAssociatedIcon(info.FullName).ToImageSource();
         }
+        #endregion
 
         /// <summary>
         /// ListItem из экземпляра ShellObject
@@ -228,6 +230,7 @@ namespace Archivator
     {
         ObservableCollection<ListItem> Entry;
         string CurrentDirectory;
+
         //тест для многопоточности
         Dispatcher Test;
         #region Вспомогательные функции
@@ -285,7 +288,7 @@ namespace Archivator
                     foreach (var item in TargetFolder)
                     {
                         // работай ок ?
-                        // вот это можно попробовать с помощью BeginInvoke сделать. Скорее всего это очень долго
+                        // через Dispatcher.InvokeAsync асинхронно добавляем элементы к ObservableCollection
                         Test.InvokeAsync(() =>
                         {
                             Entry.Add(new ListItem(item));
@@ -305,7 +308,7 @@ namespace Archivator
                 MessageBox.Show("Директория не найдена");
             }
             TestWatch.Stop();
-            System.Diagnostics.Trace.WriteLine($"Всего времени прошло : {TestWatch.ElapsedMilliseconds}");
+            System.Diagnostics.Trace.WriteLine($"Всего времени прошло : {TestWatch.ElapsedMilliseconds} мс");
         }
         #endregion
 

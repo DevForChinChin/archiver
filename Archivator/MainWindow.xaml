@@ -6,7 +6,7 @@
         xmlns:Util="clr-namespace:Wpf.Util"
         x:Class="Archivator.MainWindow"
         mc:Ignorable="d"    
-        Title="MainWindow" Height="350" Width="600" MinWidth="100">
+        Title="Archivator" Height="350" Width="600" MinWidth="100">
     <!--Свой стиль окна. По дефолту выглядит как приложение из 2007. Если хочешь его вернуть просто сотри Style-->
     <Window.Style>
         <Style TargetType="{x:Type Window}">
